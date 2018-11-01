@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyString
+  category: MyString
+  start_time: 2018-10-30 13:43:38
+  end_time: 2018-10-30 13:43:38
+  resort_id: 1
+  host_id: 1
+
+two:
+  title: MyString
+  description: MyString
+  category: MyString
+  start_time: 2018-10-30 13:43:38
+  end_time: 2018-10-30 13:43:38
+  resort_id: 1
+  host_id: 1
