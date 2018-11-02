@@ -18,9 +18,8 @@ ActiveRecord::Schema.define(version: 2018_10_30_193514) do
   create_table "events", force: :cascade do |t|
     t.string "title"
     t.string "description"
-    t.string "category"
-    t.datetime "start_time"
-    t.datetime "end_time"
+    t.date "date"
+    t.string "image_url"
     t.integer "resort_id"
     t.integer "host_id"
     t.datetime "created_at", null: false
