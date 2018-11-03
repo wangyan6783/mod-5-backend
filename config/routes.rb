@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :resorts, only: [:index, :show]
       resources :events, only: [:index, :show, :create]
+      resources :user_events, only: [:create]
     end
   end
 end

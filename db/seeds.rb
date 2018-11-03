@@ -15,6 +15,7 @@ require 'faker'
 Resort.destroy_all
 User.destroy_all
 Event.destroy_all
+UserEvent.destroy_all
 
 resorts = HTTParty.get('https://skimap.org/SkiAreas/index.json')
 events = HTTParty.get('https://www.skireg.com/api/search')
@@ -29,4 +30,8 @@ end
 
 150.times do
   Event.create(title: Faker::BackToTheFuture.character, description: Faker::BackToTheFuture.quote, date: Faker::BackToTheFuture.date, image_url: "https://www.zermatt.ch/extension/portal-zermatt/var/storage/images/media/bibliothek/aktivitaeten/winter/ski-snowboardfahren/skifahren-kick-off/2353119-3-ger-DE/Skifahren-Kick-Off_grid_700x365.jpg", resort_id: rand(1..500), host_id: rand(1..50))
+end
+
+300.times do
+  UserEvent.create(user_id: User.pluck(:id).sample, event_id: Event.pluck(:id).sample)
 end
