@@ -4,6 +4,11 @@ class Api::V1::EventsController < ApplicationController
     render json: @events, status: :ok
   end
 
+  def show
+    @event = Event.find(params[:id])
+    render json: @event, status: :ok
+  end
+
   def create
     @event = Event.new(event_params)
     if @event.save
