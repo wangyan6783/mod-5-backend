@@ -29,6 +29,10 @@ end
 end
 
 150.times do
+  titles = ["Vertical Challenge", "The Great North Ski Adventure Weekend", "Ski Camps & Clinics", "Ski and Party", "Valentines Ski/ snowtube trip", "HSC weeklong trip to Sun Valley", "Ski trip to Steamboat Colorado"]
+  descriptions = []
+  date = []
+  image_urls = []
   Event.create(title: Faker::BackToTheFuture.character, description: Faker::BackToTheFuture.quote, date: Faker::BackToTheFuture.date, image_url: "https://www.zermatt.ch/extension/portal-zermatt/var/storage/images/media/bibliothek/aktivitaeten/winter/ski-snowboardfahren/skifahren-kick-off/2353119-3-ger-DE/Skifahren-Kick-Off_grid_700x365.jpg", resort_id: rand(1..500), host_id: rand(1..50))
 end
 

@@ -11,6 +11,13 @@ class Api::V1::UserEventsController < ApplicationController
     render json: @user_event, status: :ok
   end
 
+  def destroy
+    @user_event = UserEvent.find(params[:id])
+    @user_event.destroy
+
+    render json: @user_event, status: :ok
+  end
+
   private
   def user_event_params
     params.require(:user_event).permit(:event_id, :user_id)

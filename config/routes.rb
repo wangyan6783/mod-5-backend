@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :resorts, only: [:index, :show]
       resources :events, only: [:index, :show, :create]
-      resources :user_events, only: [:create]
+      resources :user_events, only: [:create, :destroy]
     end
   end
 end
