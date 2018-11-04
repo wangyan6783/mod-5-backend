@@ -4,4 +4,5 @@ class EventSerializer < ActiveModel::Serializer
   belongs_to :resort
   has_many :user_events
   has_many :users
+  has_many :comments
 end
