@@ -5,7 +5,7 @@ Rails.application.routes.draw do
       resources :resorts, only: [:index, :show]
       resources :events, only: [:index, :show, :create]
       resources :user_events, only: [:create, :destroy]
-      resources :comments, only: [:create]
+      resources :comments, only: [:create, :update]
     end
   end
 end
