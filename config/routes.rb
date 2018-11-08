@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       resources :events, only: [:index, :show, :create]
       resources :user_events, only: [:create, :destroy]
       resources :comments, only: [:create, :update]
-      resources :users, only: [:create]
+      resources :users, only: [:create, :update]
       resources :tutorials, only: [:create]
       resources :user_tutorials, only: [:create]
       post '/login', to: 'auth#create'
