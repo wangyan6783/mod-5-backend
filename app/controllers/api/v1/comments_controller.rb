@@ -4,7 +4,7 @@ class Api::V1::CommentsController < ApplicationController
     if @comment.save
       render json: @comment, status: :ok
     else
-      render json: {error: "error"}, status: :not_acceptable
+      render json: {message: "error"}, status: :not_acceptable
     end
   end
 
@@ -13,7 +13,7 @@ class Api::V1::CommentsController < ApplicationController
     if @comment.update(comment_params)
       render json: @comment, status: :ok
     else
-      render json: {error: "error"}, status: :ok
+      render json: {message: "error"}, status: :not_acceptable
     end
   end
 

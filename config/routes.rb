@@ -7,6 +7,8 @@ Rails.application.routes.draw do
       resources :user_events, only: [:create, :destroy]
       resources :comments, only: [:create, :update]
       resources :users, only: [:create]
+      resources :tutorials, only: [:create]
+      resources :user_tutorials, only: [:create]
       post '/login', to: 'auth#create'
       get '/profile', to: 'users#profile'
     end

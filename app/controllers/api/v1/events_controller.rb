@@ -14,7 +14,7 @@ class Api::V1::EventsController < ApplicationController
     if @event.save
       render json: @event, status: :ok
     else
-      render json: {error: "error"}, status: :ok
+      render json: {message: "error"}, status: :not_acceptable
     end
   end
 
