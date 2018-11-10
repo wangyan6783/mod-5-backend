@@ -10,8 +10,16 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(event_params)
-    if @event.save
+    @event = Event.create(event_params)
+    if @event.valid?
+      # create live chat room for saved events
+      @host = User.find(@event[:host_id])
+      Rails.configuration.chatkit.create_room({ creator_id: @host[:username], name: @event[:title] })
+      # assign chat room id to this event
+      rooms = Rails.configuration.chatkit.get_user_rooms({ id: @host[:username] })
+      room = rooms[:body].find {|room| room[:name] == @event[:title]}
+      @event.update(chat_room_id: room[:id])
+
       render json: @event, status: :ok
     else
       render json: {message: "error"}, status: :not_acceptable

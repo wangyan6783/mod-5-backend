@@ -8,6 +8,9 @@ class Api::V1::UsersController < ApplicationController
   def create
     @user = User.create(user_params)
     if @user.valid?
+      # create live chat user profile
+      Rails.configuration.chatkit.create_user({ id: @user[:username], name: @user[:username] })
+      # create jwt token to have user logged in directly
       @token = encode_token(user_id: @user.id)
       render json: { user: UserSerializer.new(@user), jwt: @token }, status: :created
     else

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       resources :users, only: [:create, :update]
       resources :tutorials, only: [:create]
       resources :user_tutorials, only: [:create]
+      resources :chats, only: [:create]
       post '/login', to: 'auth#create'
       get '/profile', to: 'users#profile'
     end
