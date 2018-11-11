@@ -7,7 +7,9 @@ class Api::V1::UsersController < ApplicationController
 
   def create
     @user = User.create(user_params)
+    @avatars = ["https://cdn3.vectorstock.com/i/1000x1000/72/52/male-avatar-profile-icon-round-african-american-vector-18307252.jpg", "https://cdn1.vectorstock.com/i/1000x1000/73/15/female-avatar-profile-icon-round-woman-face-vector-18307315.jpg"]
     if @user.valid?
+      @user.update(avatar: @avatars.sample)
       # create live chat user profile
       Rails.configuration.chatkit.create_user({ id: @user[:username], name: @user[:username] })
       # create jwt token to have user logged in directly
@@ -29,6 +31,6 @@ class Api::V1::UsersController < ApplicationController
 
   private
   def user_params
-    params.require(:user).permit(:username, :password, :bio, :avatar)
+    params.require(:user).permit(:username, :password, :email, :bio, :avatar)
   end
 end
