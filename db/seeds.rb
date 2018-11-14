@@ -15,12 +15,16 @@ require 'faker'
 # delete user account from live chat kit
 puts "delete live chat info begin"
 User.all.each do |user|
-  Rails.configuration.chatkit.delete_user({ id: user[:username]})
+  if Rails.configuration.chatkit.get_user({ id: user[:username] })
+    Rails.configuration.chatkit.delete_user({ id: user[:username]})
+  end
 end
 
 # delete chat room when event is deleted
 Event.all.each do |event|
-  Rails.configuration.chatkit.delete_room({ id: event[:chat_room_id] })
+  if Rails.configuration.chatkit.get_room({ id: event[:chat_room_id] })
+    Rails.configuration.chatkit.delete_room({ id: event[:chat_room_id] })
+  end
 end
 
 puts "delete live chat info end"
@@ -82,10 +86,10 @@ puts "create live chat users end"
 
 puts "create events begin"
 150.times do
-  titles = ["Vertical Challenge", "The Great North Ski Adventure Weekend", "Ski Camps & Clinics", "Ski and Party", "Valentines Ski/ snowtube trip", "HSC weeklong trip to Sun Valley", "Ski trip to Steamboat Colorado"]
-  descriptions = []
+  titles = ["Vertical Challenge", "The Great North Ski Adventure Weekend", "Ski Camps & Clinics", "Ski and Party", "Valentines Ski/ snowtube trip", "HSC weeklong trip to Sun Valley", "Ski trip to Steamboat Colorado", "Queenstown Winter Festival", "Snowbombing", "Sknowboxx Festival", "Fresh Mountain", "Tomorrowland Winter Festival", "Sapporo Snow Festival", "Snowattack Festival", "World Rookie Fest", "Rave on Snow", "Snowtunes", "Annual Thanksgiving Trip at Killington", "Mount Snow (2 Nights 2 Lifts + Bus)", "Music & Winter Sports Festival"]
+  descriptions = ["We are going to Killington - the biggest & best ski resort in NorthEast. For this trip, we will stay at Quality Inn in Rutland. If you are coming with your friend, please indicate your friend/roommate's name when booking. If you come alone, we will match you with same gender trip goer. We will also have a coach bus or Benz Sprinter van so everyone can relate and avoid 5 hours-long drive.", "For this trip, we will stay at Snow Lake Lodge, Mount Snow's lakeside hotel with spectacular views of the mountain, Snow Lake Lodge is a real value. A free shuttle will take you to and from the slopes and you are walking distance from a great evening of entertainment at the Snowbarn (winter only). After a full day of play, take a soothing sauna, hop into the indoor or outdoor hot tub or visit the arcade. You’ll sleep well knowing your next day of fun on the slopes is just steps away", "Snowboxx never fails to deliver unbelievable snow festivals. The event is a mix of electronic music and snow sports with some of the biggest artists in Europe performing at the festival. Snow lovers can ski or snowboard the amazing Port du Soleil, explore the Burton Stash Park, or even ski across the border to Switzerland. Not a snow bunny just yet? No worries, take some beginner ski or snowboard lessons on one of the many slopes and soak up the festival atmosphere, bier (beer) in hand when you need a break!", "Join thousands of other festival ski bunnies as they party in the snow to some of the world’s hottest hip hop artists. Fresh Mountain runs from the 9th to the 16th March 2019 with a whole week of pre-parties, main events and, of course, an obligatory after party! Combine your love of snow and music in a festival never to forget.", "For this trip, we will stay at Quality Inn in Rutland. If you are coming with your friend, please indicate your friend/roommate's name when booking. If you come alone, we will match you with same gender trip goer. We will also have a coach bus or Benz Sprinter van so everyone can relate and avoid 5 hours-long drive.", "<p>Ring in the New Year at Castle Mountain rated Top 10 in the World <a href=\"https://tinyurl.com/Castletop10\" class=\"linkified\">https://tinyurl.com/Castletop10</a> and enjoy 4 fun filled days of skiing/boarding and festivities.</p> <p>We stay at a gorgeous on-hill chalet by Green Chair w 8 rooms w a queen bed and 2 rooms w 2 twin beds/room. $325/person which includes breakfasts and lunches! Tickets and transportation not included. Discounted+ Castle Cards available at our socials for $68 which offer 50% off lift tickets ALL season. Sunshine cards include Castle too!", "Fun at Fernie is back! Two nights on-hill accom and charter bus to one of our favourite mountains. $265 includes 2 nites on-hill accom, bus, pizza w salad supper at the Rusty Edge Sat AND a sandwich for trip out. Enjoy a Beverage on the bus - Details to follow. Sunday night we will stop in the town of Fernie for supper ( your cost) before our trip back to Calgary. Lift tickets available at discounted rate ( RCR special rate on lift pass, we must reach a 25 ticket purchase for the special group rate) RCR discount card is also an option.", "Whitefish by Bus is a MUST this YEAR! Trip includes Bus ride, 3 nights on-hill accommodation with hot tub (bring your hot tub suit), 3 hot breakfasts, Saturday night Welcome Reception and free shuttles to/from Whitefish town! Starting at $350 CAD!!!", "Kevin Lee is hosting our trip to Red Mountain! SCSC is partnering with Backside Tours! Trip includes transportation on luxury coach bus, accommodations at the brand new European inspired "Nowhere Special" on-hill Hostel, 3 days skiing/boarding - 2 days at Red Mountain, 1 day at Whitewater!", "Trip includes 2 nights at Tayton Lodge - ski in/out. Enjoy relaxing in the outdoor hot tub, group gatherings and a quick walk to restaurants & bars at the Resort. Accommodation and breakfast/lunch, starting at $250 per person. Transportation is not included."]
   image_urls = [ "https://usskiandsnowboard.org/sites/default/files/images/static-pages/StaticPageHeader_1600x1200_Snowboard_Jamie_Action.jpg", "http://www.cloud-booking.net/pf/img/product/geilo365/2427/2427-2000x2000.jpg", "https://coresites-cdn.factorymedia.com/cooler_new/wp-content/uploads/2015/07/Snowboard-Shops-For-Women-In-The-UK-Roxy.jpg", "https://skioutabounds.com/wp-content/uploads/2013/11/boy-snowboarding1.jpg", "https://d2s0f1q6r2lxto.cloudfront.net/pub/ProTips/wp-content/uploads/2017/01/SnowboardingKids1.jpg", "http://www.bestwesternkelownahotel.com/assets/uploads/Headers/Packages/BW-Kelowna-Hotel-Ski-Snowboard-Packages.jpg", "http://coresites-cdn.factorymedia.com/mpora_new/wp-content/uploads/2016/08/Snowboarding-Beginners-Tips-Advice-UK.jpg", "https://www.action-outdoors.co.uk/images/default-source/images---alpine-snowboard/snowboard-beginner-landing2.jpg?sfvrsn=0", "https://i.imgur.com/ergYw1L.jpg"]
-  Event.create(title: titles.sample, description: Faker::BackToTheFuture.quote, date: Faker::Date.forward(365), image_url: image_urls.sample, resort_id: rand(1..500), host_id: rand(1..50))
+  Event.create(title: titles.sample, description: discriptions.sample, date: Faker::Date.forward(365), image_url: image_urls.sample, resort_id: rand(1..500), host_id: rand(1..50))
 end
 puts "create events end"
 
@@ -108,8 +112,10 @@ puts "create user events end"
 
 puts "create comments begin"
 
+content = ["I signed up but will have to clear with employer next week or two! Thanks.", " I am going to signup two tickets for this trip, one hotel room with ski rentals and lift. thanks.", "Left 2 spots. Book yours soon.", "Meet & greet is on tomorrow. Looking forward to meet everyone.", "Hello! Just wondering is there a lower price for anyone not taking the bus? Also, are the accommodations a hotel room with two beds? Thank you!", "Rooms have 2 beds in them. 2 people in a room.", "Great deal for 2 nights accommodation on the hill."]
+
 300.times do
-  Comment.create(content: "looking forward!", user_id: User.pluck(:id).sample, event_id: Event.pluck(:id).sample, like_count: 10)
+  Comment.create(content: content.sample, user_id: User.pluck(:id).sample, event_id: Event.pluck(:id).sample, like_count: 10)
 end
 
 puts "create comments end"
