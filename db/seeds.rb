@@ -13,6 +13,7 @@ require 'faker'
 # https://github.com/stympy/faker
 
 # delete user account from live chat kit
+puts "delete live chat info begin"
 User.all.each do |user|
   Rails.configuration.chatkit.delete_user({ id: user[:username]})
 end
@@ -22,23 +23,50 @@ Event.all.each do |event|
   Rails.configuration.chatkit.delete_room({ id: event[:chat_room_id] })
 end
 
+puts "delete live chat info end"
+
+puts "delete seed data begin"
+
 Resort.destroy_all
 User.destroy_all
 Event.destroy_all
 Comment.destroy_all
 UserEvent.destroy_all
 
+puts "delete seed data end"
+
 
 resorts = HTTParty.get('https://skimap.org/SkiAreas/index.json')
 events = HTTParty.get('https://www.skireg.com/api/search')
 
+puts "create resorts begin"
+
 resorts.sample(100).each do |resort|
-  Resort.create(name: resort["SkiArea"]["name"], region: resort["Region"][0]["name"], latitude: resort["SkiArea"]["geo_lat"], longitude: resort["SkiArea"]["geo_lng"], website_url: resort["SkiArea"]["official_website"], image_url: "https://image.jimcdn.com/app/cms/image/transf/none/path/sa6549607c78f5c11/image/i4328ae53a316c822/version/1510667937/luxurious-ski-resorts-courchevel-copyright-nikolpetr-european-best-destinations.jpg")
+
+  def get_website_url
+    if resort["SkiArea"]["official_website"] == ""
+      "https://solitudemountain.com/"
+    else
+      resort["SkiArea"]["official_website"]
+    end
+  end
+
+  image_urls = ["https://image.jimcdn.com/app/cms/image/transf/none/path/sa6549607c78f5c11/image/i4328ae53a316c822/version/1510667937/luxurious-ski-resorts-courchevel-copyright-nikolpetr-european-best-destinations.jpg", "https://s3.insidehook.com/Wilmot_Header_1483736110.jpg", "https://media.cntraveler.com/photos/549966eddf8f55bf04225ec0/master/pass/val-disere-france-cr-hemis-alamy.jpg", "http://www.powderhounds.com/site/DefaultSite/filesystem/images/Canada/Banff/Overview/Banff-05.jpg", "https://www.telegraph.co.uk/content/dam/Travel/leadAssets/27/54/vail2_2754509a.jpg?imwidth=450", "http://www.powderhounds.com/site/DefaultSite/filesystem/images/Canada/Fernie/Overview/Fernie-16.jpg", "https://static.independent.co.uk/s3fs-public/thumbnails/image/2014/03/31/16/skialamy.jpg?w968h681", "https://opengeorgia.ge/res/images/cache/1140x450/gudauri-image-01.jpg", "https://s3.insidehook.com/Wilmot_Header_1483736110.jpg", "http://sierrayuzawa.com/parts_top/DSC_1252w.jpg", "https://static.standard.co.uk/s3fs-public/thumbnails/image/2016/10/18/18/meribel.jpg", "https://dynaimage.cdn.cnn.com/cnn/q_auto,w_900,c_fill,g_auto,h_506,ar_16:9/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F180105163208-kitzbuhel-resort-guide-6.jpg", "https://www.nozawaholidays.com/wp-content/uploads/2016/10/lifts-DSC06195.jpg"]
+
+  Resort.create(name: resort["SkiArea"]["name"], region: resort["Region"][0]["name"], latitude: resort["SkiArea"]["geo_lat"], longitude: resort["SkiArea"]["geo_lng"], website_url: get_website_url, image_url: image_urls.sample)
 end
+
+puts "create resorts end"
+
+puts "create users begin"
 
 30.times do
   User.create(username: Faker::Internet.username, email: Faker::Internet.free_email, password: Faker::Internet.password)
 end
+
+puts "create users end"
+
+puts "create live chat users begin"
 
 # create live chat profile for each user
 users_info = User.all.map do |user|
@@ -50,13 +78,18 @@ end
 # create live chat user profile
 Rails.configuration.chatkit.create_users({ users: users_info })
 
+puts "create live chat users end"
+
+puts "create events begin"
 150.times do
   titles = ["Vertical Challenge", "The Great North Ski Adventure Weekend", "Ski Camps & Clinics", "Ski and Party", "Valentines Ski/ snowtube trip", "HSC weeklong trip to Sun Valley", "Ski trip to Steamboat Colorado"]
   descriptions = []
-  date = []
-  image_urls = []
-  Event.create(title: titles.sample, description: Faker::BackToTheFuture.quote, date: Faker::BackToTheFuture.date, image_url: "https://www.zermatt.ch/extension/portal-zermatt/var/storage/images/media/bibliothek/aktivitaeten/winter/ski-snowboardfahren/skifahren-kick-off/2353119-3-ger-DE/Skifahren-Kick-Off_grid_700x365.jpg", resort_id: rand(1..500), host_id: rand(1..50))
+  image_urls = [ "https://usskiandsnowboard.org/sites/default/files/images/static-pages/StaticPageHeader_1600x1200_Snowboard_Jamie_Action.jpg", "http://www.cloud-booking.net/pf/img/product/geilo365/2427/2427-2000x2000.jpg", "https://coresites-cdn.factorymedia.com/cooler_new/wp-content/uploads/2015/07/Snowboard-Shops-For-Women-In-The-UK-Roxy.jpg", "https://skioutabounds.com/wp-content/uploads/2013/11/boy-snowboarding1.jpg", "https://d2s0f1q6r2lxto.cloudfront.net/pub/ProTips/wp-content/uploads/2017/01/SnowboardingKids1.jpg", "http://www.bestwesternkelownahotel.com/assets/uploads/Headers/Packages/BW-Kelowna-Hotel-Ski-Snowboard-Packages.jpg", "http://coresites-cdn.factorymedia.com/mpora_new/wp-content/uploads/2016/08/Snowboarding-Beginners-Tips-Advice-UK.jpg", "https://www.action-outdoors.co.uk/images/default-source/images---alpine-snowboard/snowboard-beginner-landing2.jpg?sfvrsn=0", "https://i.imgur.com/ergYw1L.jpg"]
+  Event.create(title: titles.sample, description: Faker::BackToTheFuture.quote, date: Faker::Date.forward(365), image_url: image_urls.sample, resort_id: rand(1..500), host_id: rand(1..50))
 end
+puts "create events end"
+
+puts "create live chat rooms begin"
 
 # create live chat room for each event
 Event.all.each do |event|
@@ -64,10 +97,19 @@ Event.all.each do |event|
   Rails.configuration.chatkit.create_room({ creator_id: host[:username], name: event[:title] })
 end
 
+puts "create live chat rooms end"
+
+puts "create user events begin"
+
 300.times do
   UserEvent.create(user_id: User.pluck(:id).sample, event_id: Event.pluck(:id).sample)
 end
+puts "create user events end"
+
+puts "create comments begin"
 
 300.times do
   Comment.create(content: "looking forward!", user_id: User.pluck(:id).sample, event_id: Event.pluck(:id).sample, like_count: 10)
 end
+
+puts "create comments end"
