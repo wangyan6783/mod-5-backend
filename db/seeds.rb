@@ -61,8 +61,10 @@ puts "create resorts end"
 
 puts "create users begin"
 
+avatars = ["https://cdn3.vectorstock.com/i/1000x1000/72/52/male-avatar-profile-icon-round-african-american-vector-18307252.jpg", "https://cdn1.vectorstock.com/i/1000x1000/73/15/female-avatar-profile-icon-round-woman-face-vector-18307315.jpg", "https://res.cloudinary.com/dfosmeuuq/image/upload/v1542218047/female-avatar-2.jpg", "https://res.cloudinary.com/dfosmeuuq/image/upload/v1542218097/man-avatar-3.jpg", "https://res.cloudinary.com/dfosmeuuq/image/upload/v1542218097/male-avatar-2.jpg", "https://res.cloudinary.com/dfosmeuuq/image/upload/v1542218078/female-avatar-3.jpg"]
+
 10.times do
-  User.create(username: Faker::Internet.username, email: Faker::Internet.free_email, password: Faker::Internet.password)
+  User.create(username: Faker::Internet.username, email: Faker::Internet.free_email, password: Faker::Internet.password, avatar: avatars.sample)
 end
 
 puts "create users end"
