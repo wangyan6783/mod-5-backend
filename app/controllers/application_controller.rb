@@ -4,6 +4,7 @@ class ApplicationController < ActionController::API
   def encode_token(payload)
     # should store secret in env variable
     JWT.encode(payload, Rails.application.credentials.jwt_secret)
+    # EDITOR="atom --wait" rails credentials:edit
   end
 
   def auth_header

@@ -13,6 +13,8 @@ require "action_cable/engine"
 # require "sprockets/railtie"
 require "rails/test_unit/railtie"
 
+require 'chatkit'
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -31,5 +33,11 @@ module Mod5Backend
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    config.chatkit = Chatkit::Client.new({
+      instance_locator: Rails.application.credentials.chatkit_instance_locator,
+      key: Rails.application.credentials.chatkit_key
+      })
+    # EDITOR="atom --wait" rails credentials:edit
   end
 end
